@@ -59,8 +59,13 @@ var mainState = {
     }
     this.player.body.velocity.x = 0;
 
+    // if ( this.mario.body.velocity.x > 0) {
+    //   this.mario.body.velocity.x -= 5;
+    // }
+
     game.physics.arcade.collide(this.player, this.pipe);
     game.physics.arcade.collide(this.player, this.castle);
+    game.physics.arcade.collide(this.mario, this.castle);
 
     // Yoshi controls
     var cursors = game.input.keyboard.createCursorKeys();
@@ -75,15 +80,22 @@ var mainState = {
  
     // MARIO CONTROLS
     if ( (this.mario.body.bottom >= this.player.body.y + 55) 
-      && (this.mario.body.x >= this.player.body.left + 100 || this.mario.body.x <= this.player.body.right - 100) ) {
+       && (this.mario.body.x > this.player.body.left || this.mario.body.x < this.player.body.right) 
+      ) {
       
       // bounce up  
       this.mario.body.velocity.y = -800;
       // go left or right
-      this.mario.body.velocity.x = 100;
+      this.mario.body.velocity.x = this.player.body.velocity.x;
     
     }
-    
+
+    if ( this.mario.body.x > this.pipe.body.x && this.mario.body.y > this.pipe.body.y - 50) {
+      // respawn
+      this.mario.body.x = 300;
+      this.mario.body.y = 100;
+    }
+
   }
 };
 
